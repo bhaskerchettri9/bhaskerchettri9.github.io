@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BHC. | The Founder</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=Barlow:wght@300;400;500;600;700&family=Barlow+Condensed:wght@700;800&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --black: #0a0a0a;
+      --white: #ffffff;
+      --grey: #aaaaaa;
+      --accent: #c8a96e;
+      --accent-dim: rgba(200,169,110,0.15);
+    }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: 'Barlow', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* Grain */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 9990; opacity: 0.3;
+    }
+
+    /* Custom Cursor */
+    .cursor-dot {
+      width: 8px; height: 8px; background: var(--accent);
+      border-radius: 50%; position: fixed; top: 0; left: 0;
+      pointer-events: none; z-index: 9999; transform: translate(-50%,-50%);
+    }
+    .cursor-ring {
+      width: 34px; height: 34px;
+      border: 1px solid rgba(200,169,110,0.45);
+      border-radius: 50%; position: fixed; top: 0; left: 0;
+      pointer-events: none; z-index: 9998; transform: translate(-50%,-50%);
+      transition: width .2s, height .2s, border-color .2s;
+    }
+
+    /* ── HEADER ── */
+    .founder-header {
+      position: relative;
+      text-align: center;
+      padding: 52px 40px 40px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      overflow: hidden;
+    }
+    .founder-header::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      animation: shimmer 3s ease-in-out infinite;
+    }
+    @keyframes shimmer {
+      0%,100% { opacity: 0.4; transform: scaleX(0.6); }
+      50%      { opacity: 1;   transform: scaleX(1); }
+    }
+
+    .header-tag {
+      font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 14px;
+      opacity: 0; animation: fadeUp 0.8s ease 0.1s forwards;
+    }
+    .founder-header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(36px, 6vw, 76px);
+      font-weight: 800; letter-spacing: 0.06em;
+      text-transform: uppercase; color: var(--white);
+      opacity: 0; animation: fadeUp 0.9s cubic-bezier(0.16,1,0.3,1) 0.2s forwards;
+    }
+    .founder-header h1 span { color: var(--accent); }
+
+    /* ── MAIN LAYOUT ── */
+    .founder-body {
+      display: grid;
+      grid-template-columns: 380px 1fr;
+      gap: 0;
+      min-height: calc(100vh - 160px);
+    }
+
+    /* ── LEFT COLUMN ── */
+    .left-col {
+      padding: 60px 40px 60px 52px;
+      display: flex; flex-direction: column;
+      align-items: flex-start;
+      border-right: 1px solid rgba(255,255,255,0.06);
+      position: relative;
+    }
+
+    /* Photo circle */
+    .photo-wrap {
+      width: 260px; height: 260px;
+      border-radius: 50%;
+      overflow: hidden;
+      position: relative;
+      opacity: 0;
+      animation: fadeScale 1s cubic-bezier(0.16,1,0.3,1) 0.4s forwards;
+      flex-shrink: 0;
+      border: 2px solid rgba(200,169,110,0.3);
+      box-shadow: 0 0 0 8px rgba(200,169,110,0.05), 0 30px 80px rgba(0,0,0,0.6);
+    }
+    .photo-wrap img {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: top center;
+      filter: grayscale(15%) contrast(1.05);
+      transition: filter 0.5s, transform 0.6s;
+    }
+    .photo-wrap:hover img {
+      filter: grayscale(0%) contrast(1.08);
+      transform: scale(1.04);
+    }
+    /* gold ring pulse */
+    .photo-wrap::after {
+      content: '';
+      position: absolute; inset: -6px;
+      border-radius: 50%;
+      border: 1px solid rgba(200,169,110,0.2);
+      animation: ringPulse 3s ease-in-out infinite;
+    }
+    @keyframes ringPulse {
+      0%,100% { transform: scale(1);   opacity: 0.5; }
+      50%      { transform: scale(1.04); opacity: 1; }
+    }
+
+    /* Name block */
+    .name-block {
+      margin-top: auto;
+      padding-top: 40px;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.9s forwards;
+    }
+    .name-block h2 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(26px, 3vw, 36px);
+      font-weight: 800; letter-spacing: 0.06em;
+      text-transform: uppercase; color: var(--white);
+      line-height: 1;
+    }
+    .name-block .ceo-title {
+      font-size: 11px; letter-spacing: 0.25em;
+      text-transform: uppercase; color: var(--accent);
+      margin-top: 10px;
+    }
+    .name-divider {
+      width: 48px; height: 2px;
+      background: var(--accent);
+      margin: 16px 0;
+    }
+
+    /* ── RIGHT COLUMN ── */
+    .right-col {
+      padding: 60px 60px 60px 52px;
+      display: flex; flex-direction: column;
+      justify-content: center; gap: 28px;
+    }
+
+    .bio-para {
+      font-size: clamp(14px, 1.4vw, 17px);
+      font-weight: 300; line-height: 1.85;
+      color: rgba(255,255,255,0.75);
+      text-align: center;
+      position: relative;
+      padding-left: 0;
+      opacity: 0; transform: translateY(28px);
+    }
+    .bio-para.visible {
+      animation: fadeUp 0.8s cubic-bezier(0.16,1,0.3,1) forwards;
+    }
+    /* highlight first word of each para */
+    .bio-para strong {
+      color: var(--white); font-weight: 600;
+    }
+
+    /* quote style for philosophy */
+    .bio-para.philosophy {
+      font-style: italic;
+      color: rgba(255,255,255,0.65);
+      border-left: 2px solid var(--accent);
+      padding-left: 24px;
+      text-align: left;
+    }
+
+    /* decorative line between paras */
+    .para-divider {
+      width: 1px; height: 32px;
+      background: linear-gradient(to bottom, transparent, rgba(200,169,110,0.4), transparent);
+      margin: 0 auto;
+      opacity: 0;
+    }
+    .para-divider.visible { animation: fadeIn 0.6s ease forwards; }
+
+    /* ── KEYFRAMES ── */
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+    @keyframes fadeScale {
+      from { opacity: 0; transform: scale(0.88); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 860px) {
+      .founder-body {
+        grid-template-columns: 1fr;
+      }
+      .left-col {
+        align-items: center; text-align: center;
+        border-right: none;
+        border-bottom: 1px solid rgba(255,255,255,0.06);
+        padding: 40px 28px;
+      }
+      .right-col { padding: 40px 28px; }
+      .bio-para.philosophy { text-align: center; border-left: none; padding-left: 0; border-top: 1px solid rgba(200,169,110,0.3); padding-top: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="cursor-dot" id="dot"></div>
+  <div class="cursor-ring" id="ring"></div>
+
+  <!-- HEADER -->
+  <header class="founder-header">
+    <div class="header-tag">— Bhasker and Co</div>
+    <h1>The <span>Founder</span></h1>
+  </header>
+
+  <!-- BODY -->
+  <div class="founder-body">
+
+    <!-- LEFT -->
+    <div class="left-col">
+      <div class="photo-wrap">
+        <img src="BPIC.jpeg" alt="Bhaskar Chetri" />
+      </div>
+      <div class="name-block">
+        <h2>Bhaskar Chetri</h2>
+        <div class="name-divider"></div>
+        <div class="ceo-title">Chief Executive Officer</div>
+      </div>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="right-col">
+
+      <p class="bio-para" data-delay="0">
+        <strong>My name is Bhasker Chettri.</strong> I was born on 27 September 2006 in
+        Gangtok, Sikkim.
+      </p>
+
+      <div class="para-divider"></div>
+
+      <p class="bio-para" data-delay="100">
+        My father's name is <strong>Om Kumar Chettri</strong> and my mother's name is
+        <strong>Priya Chettri.</strong>
+      </p>
+
+      <div class="para-divider"></div>
+
+      <p class="bio-para philosophy" data-delay="200">
+        I believe that life is unfair only for those who don't try even once.
+        This philosophy guides the way I think, work, and make decisions.
+      </p>
+
+      <div class="para-divider"></div>
+
+      <p class="bio-para" data-delay="300">
+        I see life as a long-term journey where <strong>discipline, patience, and
+        consistent effort</strong> matter more than shortcuts. I believe in building
+        things step by step, learning from mistakes, and always moving forward
+        no matter the situation.
+      </p>
+
+      <div class="para-divider"></div>
+
+      <p class="bio-para" data-delay="400">
+        My thinking is focused on <strong>growth, value creation,</strong> and building
+        something meaningful that can last for generations.
+      </p>
+
+    </div>
+  </div>
+
+  <script>
+    // Custom cursor
+    const dot = document.getElementById('dot');
+    const ring = document.getElementById('ring');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+    document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+    function animCursor() {
+      dot.style.left = mx + 'px'; dot.style.top = my + 'px';
+      rx += (mx - rx) * 0.13; ry += (my - ry) * 0.13;
+      ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+      requestAnimationFrame(animCursor);
+    }
+    animCursor();
+
+    document.querySelectorAll('a, button, .photo-wrap').forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        ring.style.width = '52px'; ring.style.height = '52px';
+        ring.style.borderColor = 'rgba(200,169,110,0.8)';
+      });
+      el.addEventListener('mouseleave', () => {
+        ring.style.width = '34px'; ring.style.height = '34px';
+        ring.style.borderColor = 'rgba(200,169,110,0.45)';
+      });
+    });
+
+    // Scroll reveal
+    const paras = document.querySelectorAll('.bio-para, .para-divider');
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          const delay = parseInt(e.target.dataset.delay || 0);
+          setTimeout(() => e.target.classList.add('visible'), delay);
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    paras.forEach(p => io.observe(p));
+  </script>
+
+</body>
+</html>
